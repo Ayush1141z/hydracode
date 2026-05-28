@@ -4,6 +4,7 @@ import { useKeyboard } from "@opentui/react";
 
 import { getFilteredCommands } from "./filter-commands";
 import type { Command } from "./types";
+import { useKeyboardLayer } from "../../providers/keyboard-layer";
 
 type UseCommandMenuReturn = {
     showCommandMenu: boolean;
@@ -22,6 +23,8 @@ export function useCommandMenu(): UseCommandMenuReturn {
     const [showCommandMenu, setShowCommandMenu] = useState(false);
 
     const scrollRef = useRef<ScrollBoxRenderable>(null);
+    const{push, pop, isTopLayer} = useKeyboardLayer();
+
 
     const commandQuery =
         showCommandMenu && textValue.startsWith("/")
@@ -32,6 +35,10 @@ export function useCommandMenu(): UseCommandMenuReturn {
         () => getFilteredCommands(commandQuery),
         [commandQuery]
     );
+    const close =() => {
+        setShowCommandMenu(false);
+        pop("command");
+    };
 
     const handleContentChange = (text: string) => {
         setTextValue(text);
@@ -49,8 +56,13 @@ export function useCommandMenu(): UseCommandMenuReturn {
 
         if (prefix !== null && !prefix.includes(" ")) {
             setShowCommandMenu(true);
+            push("command", () => {
+               close();
+                return true;
+            });
+
         } else {
-            setShowCommandMenu(false);
+          close();
         }
     };
 
@@ -60,21 +72,20 @@ export function useCommandMenu(): UseCommandMenuReturn {
         const command = filteredCommands[index];
 
         if (command) {
-            setShowCommandMenu(false);
+            close();
         }
 
         return command;
     };
 
     useKeyboard((key) => {
-        if (!showCommandMenu) {
+        if (!showCommandMenu || !isTopLayer("command")) {
             return;
         }
 
         if (key.name === "escape") {
             key.preventDefault();
-            setShowCommandMenu(false);
-
+            close();
         } else if (key.name === "up") {
             key.preventDefault();
 
