@@ -47,10 +47,7 @@ export function SessionShell({
           {loading ? <Spinner /> : null}
         </box>
 
-        <box flexDirection="row" gap={1} flexShrink={0} marginLeft="auto">
-          <text>tab</text>
-          <text attributes={TextAttributes.DIM}>agents</text>
-        </box>
+        
       </box>
     </box>
   );
