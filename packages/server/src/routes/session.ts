@@ -2,7 +2,7 @@ import { Hono } from "hono";
 //import { HTTPException } from "hono/http-exception";
 import { zValidator } from "@hono/zod-validator";
 import {z} from "zod";
-import {db} from "@hydracode/database";
+import {db} from "@hydracode/database/client";
 import {Role,Mode,MessageStatus} from "@hydracode/database/enums";
 import { findSupportedChatModel } from "@hydracode/shared";
 
