@@ -59,6 +59,15 @@ export const SUPPORTED_CHAT_MODELS =[
       outputUsdPerMillionTokens: 1.25,
     },
   },
+  // Add these to your SUPPORTED_CHAT_MODELS in shared/models.ts
+{
+  id: "meta-llama/llama-3.1-8b-instruct:free",
+  provider: "openai", // treat as openai provider
+  pricing: {
+    inputUsdPerMillionTokens: 0,
+    outputUsdPerMillionTokens: 0,
+  },
+},
 ] as const satisfies readonly SupportedChatModelDefinition[];
 
 export type SupportedChatModel = (typeof SUPPORTED_CHAT_MODELS)[number];
@@ -69,4 +78,8 @@ export function findSupportedChatModel(modelId: string) {
   return SUPPORTED_CHAT_MODELS.find((model) => model.id === modelId);
 }
 
-export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "claude-opus-4-6";
+// ORIGINAL (restore when credits available):
+// export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "claude-opus-4-6";
+
+// Using haiku temporarily — cheapest model for OpenRouter free credits
+export const DEFAULT_CHAT_MODEL_ID: SupportedChatModelId = "claude-haiku-4-5";
